@@ -28,9 +28,14 @@ import android.content.res.TypedArray;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
+import android.util.Log;
+
+import java.util.Map;
 
 public class DayPickerView extends RecyclerView
 {
+    private static final String TAG = DayPickerView.class.getSimpleName();
+
     protected Context mContext;
 	protected SimpleMonthAdapter mAdapter;
 	private DatePickerController mController;
@@ -39,6 +44,9 @@ public class DayPickerView extends RecyclerView
 	protected int mPreviousScrollState = 0;
     private TypedArray typedArray;
     private OnScrollListener onScrollListener;
+    private ShowFloatViewListener mShowFloatViewListener;
+    private HideOrShowListener mHideOrShowListener;
+    private int hideHeight;
 
     public DayPickerView(Context context)
     {
@@ -56,15 +64,16 @@ public class DayPickerView extends RecyclerView
         if (!isInEditMode())
         {
             typedArray = context.obtainStyledAttributes(attrs, R.styleable.DayPickerView);
-            setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+            setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
             init(context);
         }
     }
 
-    public void setController(DatePickerController mController)
+    public void setController(DatePickerController mController, Map<String, CalendarDutyUnitOutputs> map, int hideHeight)
     {
         this.mController = mController;
-        setUpAdapter();
+        this.hideHeight = hideHeight;
+        setUpAdapter(map);
         setAdapter(mAdapter);
     }
 
@@ -74,7 +83,7 @@ public class DayPickerView extends RecyclerView
 		mContext = paramContext;
 		setUpListView();
 
-        onScrollListener = new OnScrollListener()
+       /* onScrollListener = new OnScrollListener()
         {
             @Override
             public void onScrolled(RecyclerView recyclerView, int dx, int dy)
@@ -88,20 +97,20 @@ public class DayPickerView extends RecyclerView
                 mPreviousScrollPosition = dy;
                 mPreviousScrollState = mCurrentScrollState;
             }
-        };
+        };*/
 	}
 
 
-	protected void setUpAdapter() {
+	protected void setUpAdapter(Map<String, CalendarDutyUnitOutputs> map) {
 		if (mAdapter == null) {
-			mAdapter = new SimpleMonthAdapter(getContext(), mController, typedArray);
+			mAdapter = new SimpleMonthAdapter(getContext(), mController, typedArray, map);
         }
 		mAdapter.notifyDataSetChanged();
 	}
 
 	protected void setUpListView() {
 		setVerticalScrollBarEnabled(false);
-		setOnScrollListener(onScrollListener);
+		setOnScrollListener(new ShowFloatViewListener());
 		setFadingEdgeLength(0);
 	}
 
@@ -118,5 +127,36 @@ public class DayPickerView extends RecyclerView
     protected TypedArray getTypedArray()
     {
         return typedArray;
+    }
+
+    public class ShowFloatViewListener extends OnScrollListener{
+
+        @Override
+        public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+            super.onScrolled(recyclerView, dx, dy);
+            final SimpleMonthView child = (SimpleMonthView) recyclerView.getChildAt(0);
+            if (child == null) {
+                return;
+            }
+
+            mPreviousScrollPosition = dy;
+            mPreviousScrollState = mCurrentScrollState;
+
+
+            //下滑显示浮动层，上滑隐藏浮动层
+            Log.d(TAG, "dy is " + dy);
+            mHideOrShowListener.onHide();
+            mHideOrShowListener.onShow();
+        }
+    }
+
+
+    public void setmHideOrShowListener(HideOrShowListener mHideOrShowListener) {
+        this.mHideOrShowListener = mHideOrShowListener;
+    }
+
+    public interface HideOrShowListener{
+        public void onHide();
+        public void onShow();
     }
 }

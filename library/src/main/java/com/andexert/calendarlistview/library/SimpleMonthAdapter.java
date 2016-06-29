@@ -35,6 +35,7 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Map;
 
 public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.ViewHolder> implements SimpleMonthView.OnDayClickListener {
     protected static final int MONTHS_IN_YEAR = 12;
@@ -45,8 +46,8 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
     private final SelectedDays<CalendarDay> selectedDays;
     private final Integer firstMonth;
     private final Integer lastMonth;
-
-	public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray) {
+    private Map<String, CalendarDutyUnitOutputs> map = new HashMap<String, CalendarDutyUnitOutputs>();
+	public SimpleMonthAdapter(Context context, DatePickerController datePickerController, TypedArray typedArray, Map<String, CalendarDutyUnitOutputs> map) {
         this.typedArray = typedArray;
         calendar = Calendar.getInstance();
         firstMonth = typedArray.getInt(R.styleable.DayPickerView_firstMonth, calendar.get(Calendar.MONTH));
@@ -54,6 +55,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         selectedDays = new SelectedDays<>();
 		mContext = context;
 		mController = datePickerController;
+        this.map = map;
 		init();
 	}
 
@@ -107,7 +109,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_YEAR, year);
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_MONTH, month);
         drawingParams.put(SimpleMonthView.VIEW_PARAMS_WEEK_START, calendar.getFirstDayOfWeek());
-        v.setMonthParams(drawingParams);
+        v.setMonthParams(drawingParams, map);
         v.invalidate();
     }
 
@@ -170,7 +172,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
                     mController.onDayOfMonthSelected(selectedDays.getFirst().year, selectedDays.getFirst().month + i, selectedDays.getFirst().day);
             }
 
-            mController.onDateRangeSelected(selectedDays);
+            //mController.onDateRangeSelected(selectedDays);
         }
         else if (selectedDays.getLast() != null)
         {
@@ -180,7 +182,7 @@ public class SimpleMonthAdapter extends RecyclerView.Adapter<SimpleMonthAdapter.
         else
             selectedDays.setFirst(calendarDay);
 
-		notifyDataSetChanged();
+		//notifyDataSetChanged();
 	}
 
 	public static class CalendarDay implements Serializable

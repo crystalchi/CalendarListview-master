@@ -6,4 +6,5 @@
     <dimen name="header_month_height">50dip</dimen>
     <dimen name="selected_day_radius">16dip</dimen>
     <dimen name="calendar_height">270dip</dimen>
+    <dimen name="text_mini_size_for_day">12dp</dimen>
 </resources>
