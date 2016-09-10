@@ -11,7 +11,9 @@
         <attr name="color114" format="color"/>
         <attr name="colorAbaaaa" format="color"/>
         <attr name="colorWhite" format="color"/>
+        <attr name="colorCCCCCC" format="color"/>
         <attr name="textSizeDay" format="dimension"/>
+        <attr name="textSizeLabel" format="dimension"/>
         <attr name="textSizeMonth" format="dimension" />
         <attr name="textMiniSizeMonth" format="dimension" />
         <attr name="textSizeDayName" format="dimension" />

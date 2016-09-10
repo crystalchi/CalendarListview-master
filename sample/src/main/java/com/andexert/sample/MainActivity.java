@@ -1,20 +1,14 @@
 package com.andexert.sample;
 
 import android.app.Activity;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.andexert.calendarlistview.library.CalendarDutyUnitOutputs;
 import com.andexert.calendarlistview.library.DatePickerController;
 import com.andexert.calendarlistview.library.DayPickerView;
 import com.andexert.calendarlistview.library.SimpleMonthAdapter;
-import com.google.android.gms.appindexing.Action;
-import com.google.android.gms.appindexing.AppIndex;
-import com.google.android.gms.common.api.GoogleApiClient;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +32,7 @@ public class MainActivity extends Activity implements DatePickerController, DayP
 
         Map<String, Integer> map1 = new HashMap<String, Integer>();
         CalendarDutyUnitOutputs cdo = new CalendarDutyUnitOutputs();
-        cdo.setDutyDate("2016-06-29");
+        cdo.setDutyDate("2016-09-29");
         cdo.setDutyStatus(1);
         cdo.setRemainAvailableNumber114(18);
         cdo.setRemainAvailableNumberWeb(20);
@@ -49,8 +43,8 @@ public class MainActivity extends Activity implements DatePickerController, DayP
 
         Map<String, Integer> map2 = new HashMap<String, Integer>();
         CalendarDutyUnitOutputs cdo1 = new CalendarDutyUnitOutputs();
-        cdo1.setDutyDate("2016-07-10");
-        cdo1.setDutyStatus(1);
+        cdo1.setDutyDate("2016-09-11");
+        cdo1.setDutyStatus(2);
         cdo1.setRemainAvailableNumber114(8);
         cdo1.setRemainAvailableNumberWeb(0);
         cdo1.setWeek(7);
@@ -61,7 +55,7 @@ public class MainActivity extends Activity implements DatePickerController, DayP
 
         Map<String, Integer> map3 = new HashMap<String, Integer>();
         CalendarDutyUnitOutputs cdo2 = new CalendarDutyUnitOutputs();
-        cdo2.setDutyDate("2016-06-30");
+        cdo2.setDutyDate("2016-09-30");
         cdo2.setDutyStatus(2);
         cdo2.setRemainAvailableNumber114(12);
         cdo2.setRemainAvailableNumberWeb(24);
@@ -72,7 +66,7 @@ public class MainActivity extends Activity implements DatePickerController, DayP
 
         Map<String, Integer> map4 = new HashMap<String, Integer>();
         CalendarDutyUnitOutputs cdo3 = new CalendarDutyUnitOutputs();
-        cdo3.setDutyDate("2016-07-30");
+        cdo3.setDutyDate("2016-09-30");
         cdo3.setDutyStatus(1);
         cdo3.setRemainAvailableNumber114(10);
         cdo3.setRemainAvailableNumberWeb(15);
@@ -83,7 +77,7 @@ public class MainActivity extends Activity implements DatePickerController, DayP
 
         Map<String, Integer> map5 = new HashMap<String, Integer>();
         CalendarDutyUnitOutputs cdo4 = new CalendarDutyUnitOutputs();
-        cdo4.setDutyDate("2016-08-01");
+        cdo4.setDutyDate("2016-09-01");
         cdo4.setDutyStatus(1);
         cdo4.setRemainAvailableNumber114(0);
         cdo4.setRemainAvailableNumberWeb(15);
@@ -94,7 +88,7 @@ public class MainActivity extends Activity implements DatePickerController, DayP
 
         Map<String, Integer> map6 = new HashMap<String, Integer>();
         CalendarDutyUnitOutputs cdo5 = new CalendarDutyUnitOutputs();
-        cdo5.setDutyDate("2016-08-02");
+        cdo5.setDutyDate("2016-09-02");
         cdo5.setDutyStatus(1);
         cdo5.setRemainAvailableNumber114(16);
         cdo5.setRemainAvailableNumberWeb(0);
@@ -102,6 +96,17 @@ public class MainActivity extends Activity implements DatePickerController, DayP
         map6.put("114", cdo5.getRemainAvailableNumber114());
         map6.put("wo", cdo5.getRemainAvailableNumberWeb());
         cdo5.setWo114Map(map6);
+
+        Map<String, Integer> map7 = new HashMap<String, Integer>();
+        CalendarDutyUnitOutputs cdo6 = new CalendarDutyUnitOutputs();
+        cdo6.setDutyDate("2016-09-11");
+        cdo6.setDutyStatus(2);
+        cdo6.setRemainAvailableNumber114(8);
+        cdo6.setRemainAvailableNumberWeb(0);
+        cdo6.setWeek(7);
+        map7.put("114", cdo6.getRemainAvailableNumber114());
+        map7.put("wo", cdo6.getRemainAvailableNumberWeb());
+        cdo6.setWo114Map(map7);
 
 
         cdoList.add(cdo);
@@ -119,6 +124,7 @@ public class MainActivity extends Activity implements DatePickerController, DayP
         dayPickerView = (DayPickerView) findViewById(R.id.pickerView);
         dayPickerView.setController(this, map, 2);
         dayPickerView.setmHideOrShowListener(this);
+        dayPickerView.addItemDecoration(new DividerItemDecoration(MainActivity.this, LinearLayoutManager.VERTICAL));
     }
 
     @Override
